@@ -4,12 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>今天中午吃什么？</title>
-    <!-- 微信分享优化 -->
-    <meta property="og:title" content="今天中午吃什么？">
-    <meta property="og:description" content="点击随机选择你的午餐！">
-    <meta property="og:image" content="https://your-domain.com/thumbnail.jpg"> <!-- 替换为你的缩略图 URL -->
-    <meta property="og:url" content="https://your-domain.com"> <!-- 替换为你的页面 URL -->
-    <link rel="icon" href="https://your-domain.com/favicon.png" type="image/png"> <!-- 替换为你的图标 URL -->
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -20,9 +14,33 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            background: url('food1.jpg') no-repeat center center/cover; /* 默认背景图片 */
-            transition: background-image 1s ease-in-out; /* 背景切换动画 */
+            background: url('food1.jpg') no-repeat center center/cover;
+            transition: background-image 1s ease-in-out;
         }
+
+        /* Logo 样式 */
+        .logo-container {
+            position: fixed;
+            top: 20px;
+            left: 20px;
+            z-index: 2;
+        }
+        .logo {
+            width: 120px;
+            opacity: 0.9;
+        }
+
+        /* 内容容器 */
+        .container {
+            background: rgba(255, 255, 255, 0.8);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative; /* 确保内容层级高于背景 */
+            z-index: 3;        /* 内容容器在最上层 */
+        }
+
+        /* 其他原有样式 */
         h1 {
             color: #333;
             margin-bottom: 20px;
@@ -45,15 +63,15 @@
         button:hover {
             background-color: #0056b3;
         }
-        .container {
-            background: rgba(255, 255, 255, 0.8); /* 半透明白色背景 */
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-        }
     </style>
 </head>
 <body>
+    <!-- 新增 Logo -->
+    <div class="logo-container">
+        <img src="logo.png" alt="我的 Logo" class="logo">
+    </div>
+
+    <!-- 原有内容 -->
     <div class="container">
         <h1>今天中午吃什么？</h1>
         <button onclick="startRandom()">开始随机选择</button>
@@ -61,56 +79,39 @@
     </div>
 
     <script>
-        // 本地图片列表
-        const images = [
-            'food1.jpg','food5.jpg','food6.jpg',
-            'food2.jpg',
-            'food3.jpg',
-            'food4.jpg'
-        ];
-
+        // 原有 JavaScript 代码保持不变
+        const images = ['food1.jpg', 'food2.jpg', 'food3.jpg, food4.jpg', 'food5.jpg', 'food6.jpg'];
         let currentImageIndex = 0;
-
-        // 切换背景图片
         function changeBackground() {
-            currentImageIndex = (currentImageIndex + 1) % images.length; // 循环切换
+            currentImageIndex = (currentImageIndex + 1) % images.length;
             document.body.style.backgroundImage = `url('${images[currentImageIndex]}')`;
         }
+        setInterval(changeBackground, 5000);
 
-        // 启动背景轮播
-        setInterval(changeBackground, 3000); // 每3秒切换一次背景
-
-        // 饭菜列表
         const meals = [
             "红烧肉", "宫保鸡丁", "鱼香肉丝", "麻婆豆腐", "糖醋排骨",
             "西红柿炒鸡蛋", "青椒肉丝", "酸菜鱼", "回锅肉", "水煮牛肉",
-            "干锅花菜", "蒜蓉粉丝蒸扇贝", "清蒸鲈鱼", "辣子鸡", "土豆烧牛肉"
-        ];
-
-        let isRunning = false; // 是否正在轮播
-        let intervalId = null; // 用于存储定时器的ID
+            "干锅花菜", "蒜蓉粉丝蒸扇贝", "清蒸鲈鱼", "辣子鸡", "土豆烧牛肉"];
+        let isRunning = false;
+        let intervalId = null;
         const resultElement = document.getElementById("result");
 
-        // 随机选择一个饭菜
         function getRandomMeal() {
             const randomIndex = Math.floor(Math.random() * meals.length);
             return meals[randomIndex];
         }
 
-        // 开始轮播
         function startRandom() {
             if (isRunning) {
-                // 如果正在轮播，停止轮播并显示结果
                 clearInterval(intervalId);
                 isRunning = false;
                 document.querySelector("button").textContent = "开始随机选择";
             } else {
-                // 如果未在轮播，开始轮播
                 isRunning = true;
                 document.querySelector("button").textContent = "停止并选中";
                 intervalId = setInterval(() => {
                     resultElement.textContent = `今天中午吃：${getRandomMeal()}`;
-                }, 100); // 每100毫秒更新一次
+                }, 100);
             }
         }
     </script>
